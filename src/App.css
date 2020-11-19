@@ -6,11 +6,13 @@
   height: 100%;
   z-index: 1;
 }
-
+.nav {
+  left: 50%;
+}
 .centered {
   top: 50%;
   left: 50%;
-  position: absolute;
+
   transform: translate(-50px, -50px);
 }
 

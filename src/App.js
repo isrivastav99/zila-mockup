@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Loader from "./components/Loader";
 import * as XLSX from "xlsx";
 
 function App() {
@@ -16,7 +15,7 @@ function App() {
         const wb = XLSX.read(bufferArray, { type: "buffer" });
         const sheetName = wb.SheetNames[0];
         const sheet = wb.Sheets[sheetName];
-        console.log(sheet);
+        // console.log(sheet);
         const data = XLSX.utils.sheet_to_json(sheet, { raw: false });
         resolve(data);
       };
@@ -25,20 +24,39 @@ function App() {
       };
     });
 
-    promise.then((d) => {
-      console.log(d);
-      setItems(d);
+    promise.then((data) => {
+      // console.log(data);
+      setItems(data);
     });
   };
+  const DownloadFile = (file) => {
+    const sheet = XLSX.utils.json_to_sheet(file, {
+      header: ["S no.", "Name", "Dob", "Age", "Salary", "Tax"],
+    });
+    console.log(sheet);
+  };
+  // console.log(calculateAge(2 / 2 / 1973));
   return (
     <div>
-      <input
-        type="file"
-        onChange={(e) => {
-          const file = e.target.files[0];
-          readExcel(file);
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: 20,
+          paddingBottom: 20,
         }}
-      />
+      >
+        <input
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            readExcel(file);
+          }}
+        />
+        <button onClick={DownloadFile(items)}>Download file</button>
+      </div>
+
       <table className="table">
         <thead>
           <tr>
@@ -56,9 +74,9 @@ function App() {
               <td>{d.Sno}</td>
               <td>{d.Name}</td>
               <td>{d.Dob}</td>
-              <td>{d.Age}</td>
+              <td>calculateAge({d.Dob})</td>
               <td>{d.Salary}</td>
-              <td>{d.Tax}</td>
+              <td>{d.Salary * 0.15}</td>
             </tr>
           ))}
         </tbody>
