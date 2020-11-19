@@ -17,7 +17,7 @@ function App() {
         const sheetName = wb.SheetNames[0];
         const sheet = wb.Sheets[sheetName];
         console.log(sheet);
-        const data = XLSX.utils.sheet_to_json(sheet);
+        const data = XLSX.utils.sheet_to_json(sheet, { raw: false });
         resolve(data);
       };
       fileReader.onerror = (error) => {
